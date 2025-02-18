@@ -8,14 +8,14 @@ const userData = {
 
 function App() {
   
-  <div>
+ 
 return (
     <UserContext.Provider value={userData}>
       <ProfilePage />
     </UserContext.Provider>
   );
 
-  </div>
+ 
 
 
 }
