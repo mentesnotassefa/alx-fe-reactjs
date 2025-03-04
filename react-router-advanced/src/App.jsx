@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./components/Home";
 import Profile from "./components/Profile";
-import BlogPost from "./pages/BlogPost";
-import Login from "./pages/Login";
-import NotFound from "./pages/NotFound";
+import BlogPost from "./components/BlogPost";
+import Login from "./components/Login";
+import NotFound from "./components/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
