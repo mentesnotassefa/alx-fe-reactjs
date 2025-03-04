@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import Profile from "./components/Profile";
-import BlogPost from "./components/BlogPost";
-import Login from "./components/Login";
-import NotFound from "./components/NotFound";
+import BlogPost from "./pages/BlogPost";
+import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -21,8 +21,8 @@ function App() {
           <Route path="/profile/*" element={<Profile />} />
         </Route>
 
-        {/* Dynamic Route */}
-        <Route path="/blog/:postId" element={<BlogPost />} />
+        {/* Dynamic Route for Blog Posts */}
+        <Route path="/blog/:id" element={<BlogPost />} />
 
         {/* 404 Not Found Route */}
         <Route path="*" element={<NotFound />} />
