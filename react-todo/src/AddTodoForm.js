@@ -1,4 +1,3 @@
-// src/AddTodoForm.js
 import React, { useState } from 'react';
 
 const AddTodoForm = ({ addTodo }) => {
