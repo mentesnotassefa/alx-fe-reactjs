@@ -1,22 +1,34 @@
-import React from 'react';
+// src/__tests__/TodoList.test.js
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import TodoList from '../TodoList';
 
-test('adds a new todo', () => {
-  // Render the TodoList component
+test('renders todo list', () => {
   render(<TodoList />);
+  const todoElement = screen.getByText(/Learn React/i);
+  expect(todoElement).toBeInTheDocument();
+});
 
-  // Find the input field and add button
-  const input = screen.getByRole('textbox');
-  const addButton = screen.getByText('Add Todo');
+test('adds new todo', () => {
+  render(<TodoList />);
+  const inputElement = screen.getByPlaceholderText(/Add a new todo/i);
+  fireEvent.change(inputElement, { target: { value: 'New Todo' } });
+  fireEvent.click(screen.getByText(/Add Todo/i));
+  const newTodoElement = screen.getByText(/New Todo/i);
+  expect(newTodoElement).toBeInTheDocument();
+});
 
-  // Simulate user input
-  fireEvent.change(input, { target: { value: 'New Todo' } });
-  
-  // Simulate form submission
-  fireEvent.click(addButton);
+test('toggles todo', () => {
+  render(<TodoList />);
+  const todoElement = screen.getByText(/Learn React/i);
+  fireEvent.click(todoElement);
+  expect(todoElement).toHaveStyle('text-decoration: line-through');
+  fireEvent.click(todoElement);
+  expect(todoElement).toHaveStyle('text-decoration: none');
+});
 
-  // Assert that the new todo is displayed
-  expect(screen.getByText('New Todo')).toBeInTheDocument();
+test('deletes todo', () => {
+  render(<TodoList />);
+  const todoElement = screen.getByText(/Learn React/i);
+  fireEvent.click(screen.getByText(/Delete/i));
+  expect(todoElement).not.toBeInTheDocument();
 });
