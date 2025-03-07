@@ -40,8 +40,6 @@
     "jest": "^27.5.1"
   },
   "jest": {
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    }
+    "testEnvironment": "jsdom"
   }
 }

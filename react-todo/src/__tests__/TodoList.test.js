@@ -1,6 +1,7 @@
-// src/__tests__/TodoList.test.js
+import '@testing-library/jest-dom'; // Add this line
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import TodoList from '../components/TodoList';
+import TodoList from '../TodoList';
 
 test('renders todo list', () => {
   render(<TodoList />);
@@ -28,7 +29,10 @@ test('toggles todo', () => {
 
 test('deletes todo', () => {
   render(<TodoList />);
-  const todoElement = screen.getByText(/Learn React/i);
-  fireEvent.click(screen.getByText(/Delete/i));
+  const deleteButtons = screen.getAllByText(/Delete/i);
+  fireEvent.click(deleteButtons[0]); // Click the first "Delete" button
+  const todoElement = screen.queryByText(/Learn React/i);
   expect(todoElement).not.toBeInTheDocument();
 });
+
+
