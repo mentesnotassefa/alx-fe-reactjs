@@ -26,7 +26,7 @@ const RecipeDetail = () => {
         alt={recipe.title}
         className="w-full max-h-96 object-cover rounded mb-4"
       />
-      <h2 className="text-2xl font-semibold mt-6 mb-2">Ingredients</h2>
+      <h2 className="text-2xl font-semibold mt-6 mb-2 shadow">Ingredients</h2>
       <ul className="list-disc list-inside pl-4 text-gray-700">
         {recipe.ingredients.map((ingredient, index) => (
           <li key={index}>{ingredient}</li>
