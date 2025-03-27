@@ -21,6 +21,7 @@ function Search() {
     setLoading(true);
     setError(null);
     setResults([]);
+    //fetchUserData
 
     try {
       const query = `${searchParams.username}${searchParams.location ? ` location:${searchParams.location}` : ''}${searchParams.minRepos ? ` repos:>=${searchParams.minRepos}` : ''}`;
