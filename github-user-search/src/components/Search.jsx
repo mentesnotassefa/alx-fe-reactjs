@@ -1,57 +1,124 @@
 import { useState } from 'react';
-import { fetchUserData } from '../services/githubService';
+import { searchUsers } from '../services/githubService';
 
 function Search() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [userData, setUserData] = useState(null);
+  const [searchParams, setSearchParams] = useState({
+    username: '',
+    location: '',
+    minRepos: ''
+  });
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSearchParams(prev => ({ ...prev, [name]: value }));
+  };
+
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!searchTerm.trim()) return;
-
     setLoading(true);
     setError(null);
-    setUserData(null);
+    setResults([]);
 
     try {
-      const data = await fetchUserData(searchTerm);
-      setUserData(data);
+      const query = `${searchParams.username}${searchParams.location ? ` location:${searchParams.location}` : ''}${searchParams.minRepos ? ` repos:>=${searchParams.minRepos}` : ''}`;
+      const data = await searchUsers(query.trim());
+      setResults(data.items || []);
     } catch (err) {
-      setError('Looks like we cant find the user');
+      setError('Error fetching search results');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="search-container">
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Enter GitHub username..."
-        />
-        <button type="submit" disabled={loading}>
-          Search
+    <div className="container mx-auto px-4 py-8">
+      <form onSubmit={handleSearch} className="mb-8 bg-white p-6 rounded-lg shadow-md">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={searchParams.username}
+              onChange={handleInputChange}
+              placeholder="Enter username"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+              Location
+            </label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={searchParams.location}
+              onChange={handleInputChange}
+              placeholder="Enter location"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label htmlFor="minRepos" className="block text-sm font-medium text-gray-700 mb-1">
+              Min Repositories
+            </label>
+            <input
+              type="number"
+              id="minRepos"
+              name="minRepos"
+              value={searchParams.minRepos}
+              onChange={handleInputChange}
+              placeholder="Minimum repos"
+              min="0"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-4 w-full md:w-auto px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+        >
+          {loading ? 'Searching...' : 'Search'}
         </button>
       </form>
 
       <div className="results">
-        {loading && <p>Loading...</p>}
-        {error && <p className="error">{error}</p>}
-        {userData && (
-          <div className="user-card">
-            <img src={userData.avatar_url} alt="User avatar" className="avatar" />
-            <div className="user-info">
-              <h2>{userData.name || userData.login}</h2>
-              <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-                View Profile
-              </a>
-            </div>
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        {results.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {results.map(user => (
+              <div key={user.id} className="bg-white p-6 rounded-lg shadow-md flex items-center gap-4">
+                <img
+                  src={user.avatar_url}
+                  alt={`${user.login}'s avatar`}
+                  className="w-16 h-16 rounded-full"
+                />
+                <div>
+                  <h3 className="text-lg font-semibold">{user.login}</h3>
+                  <a
+                    href={user.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    View Profile
+                  </a>
+                </div>
+              </div>
+            ))}
           </div>
+        )}
+        {loading && <p className="text-center text-gray-600">Loading...</p>}
+        {!loading && !error && results.length === 0 && searchParams.username && (
+          <p className="text-center text-gray-600">No users found</p>
         )}
       </div>
     </div>
