@@ -4,16 +4,19 @@ const api = axios.create({
   baseURL: 'https://api.github.com',
   headers: {
     'Accept': 'application/vnd.github.v3+json',
-  }
+  },
 });
 
-export const searchUsers = async (query) => {
+export const searchUsers = async (username, location, minRepos) => {
   try {
-    const response = await api.get('/search/users', {
+    let query = username || '';
+    if (location) query += ` location:${location}`;
+    if (minRepos) query += ` repos:>=${minRepos}`;
+
+    const response = await api.get(`/search/users?q=${encodeURIComponent(query.trim())}`, {
       params: {
-        q: query,
-        per_page: 20 // Limit results per page
-      }
+        per_page: 20, // Limit results per page
+      },
     });
     return response.data;
   } catch (error) {
