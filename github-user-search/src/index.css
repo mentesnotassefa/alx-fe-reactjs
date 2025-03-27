@@ -14,14 +14,21 @@ header {
   margin-bottom: 20px;
 }
 
+.search-container {
+  margin: 20px 0;
+}
+
 form {
   display: flex;
   gap: 10px;
+  margin-bottom: 20px;
 }
 
 input {
   padding: 8px;
   flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 button {
@@ -35,4 +42,39 @@ button {
 
 button:hover {
   background-color: #024ea4;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  gap: 20px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.error {
+  color: #d32f2f;
+  text-align: center;
+}
+
+.results {
+  min-height: 100px;
 }

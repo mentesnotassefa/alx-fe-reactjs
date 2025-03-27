@@ -7,16 +7,12 @@ const api = axios.create({
   }
 });
 
-export const searchUsers = async (query) => {
+export const fetchUserData = async (username) => {
   try {
-    const response = await api.get('/search/users', {
-      params: {
-        q: query
-      }
-    });
+    const response = await api.get(`/users/${username}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching GitHub users:', error);
+    console.error('Error fetching GitHub user data:', error);
     throw error;
   }
 };
