@@ -119,7 +119,7 @@ function Search() {
         )}
         {loading && <p className="text-center text-gray-600">Loading...</p>}
         {!loading && !error && results.length === 0 && searchParams.username && (
-          <p className="text-center text-gray-600">No users found</p>
+          <p className="text-center text-gray-600">Looks like we cant find the user</p>
         )}
       </div>
     </div>
