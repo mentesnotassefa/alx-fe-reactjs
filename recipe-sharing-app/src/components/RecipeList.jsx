@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import useRecipeStore from './recipeStore';
-
+//recipes
 const RecipeList = () => {
   const filteredRecipes = useRecipeStore((state) => state.filteredRecipes);
 
