@@ -10,7 +10,7 @@ function Search() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  //target.value
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSearchParams(prev => ({ ...prev, [name]: value }));
